@@ -118,7 +118,7 @@ function EventDetailBody({ event, relatedEvents }: BodyProps) {
           style={{ textDecoration: 'none' }}
         >
           <Button variant="primary" size="md">
-            Register →
+            View event page →
           </Button>
         </a>
       </section>

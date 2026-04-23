@@ -65,7 +65,7 @@ describe('EventDetailPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: /react slc may meetup/i })).toBeInTheDocument();
     expect(screen.getAllByText(/May 15/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Salt Lake City/).length).toBeGreaterThan(0);
-    const register = screen.getByRole('link', { name: /register/i });
+    const register = screen.getByRole('link', { name: /view event page/i });
     expect(register).toHaveAttribute('href', 'https://example.com/react-slc');
     expect(register).toHaveAttribute('target', '_blank');
   });

@@ -108,7 +108,7 @@ export function EventCard({ event, variant = 'compact' }: EventCardProps) {
               style={{ marginLeft: 'auto', textDecoration: 'none' }}
             >
               <Button variant="outline" size="sm">
-                Register →
+                View event page →
               </Button>
             </a>
           )}

@@ -29,7 +29,7 @@ export default function AboutPage() {
       <Section title="How data is sourced">
         <p>
           Events come from Meetup, Eventbrite, lu.ma, and direct company postings. Jobs are curated
-          from linkedin, company careers pages, and community tips. Companies are hand-maintained.
+          from LinkedIn, company careers pages, and community tips. Companies are hand-maintained.
         </p>
         <p>
           Saw a broken listing or something missing? Drop us a line at{' '}
@@ -38,6 +38,26 @@ export default function AboutPage() {
           </a>
           .
         </p>
+      </Section>
+
+      <Section title="Note on this build">
+        <p>
+          This site currently runs on curated seed data. A few things worth knowing:
+        </p>
+        <ul style={{ paddingLeft: '18px', marginTop: '8px', lineHeight: 1.7 }}>
+          <li>
+            Listings link to organizer homepages and company careers pages — not to specific event
+            registrations or job applications. That keeps links stable but means you'll land on a
+            directory rather than the exact posting.
+          </li>
+          <li>
+            The "Hiring" flag on a company reflects the seed date (April 2026), not real-time
+            status. Confirm current openings on the linked careers page.
+          </li>
+          <li>
+            A live data pipeline (Meetup / LinkedIn / company APIs) is parked for v2.
+          </li>
+        </ul>
       </Section>
 
       <Section title="Submit an event or job">

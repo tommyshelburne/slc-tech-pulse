@@ -67,7 +67,7 @@ describe('EventCard — full variant', () => {
     const titleLink = screen.getByRole('link', { name: /react slc · may meetup/i });
     expect(titleLink).toHaveAttribute('href', '/events/react-slc-may');
 
-    const registerLink = screen.getByRole('link', { name: /register/i });
+    const registerLink = screen.getByRole('link', { name: /view event page/i });
     expect(registerLink).toHaveAttribute('href', 'https://meetup.com/react-slc');
     expect(registerLink).toHaveAttribute('target', '_blank');
     expect(registerLink).toHaveAttribute('rel', expect.stringContaining('noopener'));
