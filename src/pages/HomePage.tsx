@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useEventsStore } from '../store/eventsStore';
 import { useJobsStore } from '../store/jobsStore';
 import { useCompaniesStore } from '../store/companiesStore';
@@ -13,6 +14,7 @@ import { EmptyState } from '../components/ui/EmptyState';
 import { isThisWeek, isUpcoming } from '../utils/dates';
 
 export default function HomePage() {
+  useDocumentTitle();
   const events = useEventsStore((s) => s.events);
   const eventsLoading = useEventsStore((s) => s.loading);
   const eventsError = useEventsStore((s) => s.error);

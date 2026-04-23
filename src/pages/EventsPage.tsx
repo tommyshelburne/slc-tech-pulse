@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useEventsStore } from '../store/eventsStore';
 import { useUIStore } from '../store/uiStore';
 import { EventCard } from '../components/events/EventCard';
@@ -11,6 +12,7 @@ import { filterEvents } from '../utils/filters';
 import { useEventFiltersUrlSync } from '../hooks/useEventFiltersUrlSync';
 
 export default function EventsPage() {
+  useDocumentTitle('Events');
   useEventFiltersUrlSync();
 
   const events = useEventsStore((s) => s.events);

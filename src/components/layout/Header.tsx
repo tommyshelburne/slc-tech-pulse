@@ -31,7 +31,8 @@ export function Header() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '24px',
+          gap: '16px',
+          flexWrap: 'wrap',
           maxWidth: '1200px',
           margin: '0 auto',
         }}

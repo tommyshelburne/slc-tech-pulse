@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useEventsStore } from '../store/eventsStore';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
@@ -17,14 +18,15 @@ export default function EventDetailPage() {
   const loading = useEventsStore((s) => s.loading);
   const error = useEventsStore((s) => s.error);
 
+  const event = useMemo(() => events.find((e) => e.id === id), [events, id]);
+  useDocumentTitle(event?.title ?? 'Event');
+
   useEffect(() => {
     const state = useEventsStore.getState();
     if (!state.loading && state.events.length === 0) {
       void state.fetchEvents();
     }
   }, []);
-
-  const event = useMemo(() => events.find((e) => e.id === id), [events, id]);
 
   const relatedEvents = useMemo<Event[]>(() => {
     if (!event) return [];

@@ -1,6 +1,8 @@
 import { Card } from '../components/ui/Card';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 
 export default function AboutPage() {
+  useDocumentTitle('About');
   return (
     <div style={{ maxWidth: '720px' }}>
       <h1 style={{ fontSize: '28px', fontWeight: 700, margin: '0 0 12px' }}>About SLC Tech Pulse</h1>

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useCompaniesStore } from '../store/companiesStore';
 import { CompanyCard } from '../components/companies/CompanyCard';
 import { CompanyFilters } from '../components/companies/CompanyFilters';
@@ -9,6 +10,7 @@ import { Badge } from '../components/ui/Badge';
 import { filterCompanies, type CompanySizeFilter } from '../utils/filters';
 
 export default function CompaniesPage() {
+  useDocumentTitle('Companies');
   const companies = useCompaniesStore((s) => s.companies);
   const loading = useCompaniesStore((s) => s.loading);
   const error = useCompaniesStore((s) => s.error);

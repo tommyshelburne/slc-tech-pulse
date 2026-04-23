@@ -12,43 +12,45 @@ function renderAt(path: string) {
 }
 
 describe('AppRoutes', () => {
-  it('renders HomePage at /', () => {
+  it('renders HomePage at /', async () => {
     renderAt('/');
     expect(
-      screen.getByRole('heading', { level: 1, name: /what's happening in silicon slopes/i }),
+      await screen.findByRole('heading', { level: 1, name: /what's happening in silicon slopes/i }),
     ).toBeInTheDocument();
   });
 
-  it('renders EventsPage at /events', () => {
+  it('renders EventsPage at /events', async () => {
     renderAt('/events');
-    expect(screen.getByRole('heading', { level: 1, name: /^events$/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: /^events$/i })).toBeInTheDocument();
   });
 
-  it('renders EventDetailPage at /events/:id', () => {
+  it('renders EventDetailPage at /events/:id', async () => {
     renderAt('/events/react-slc-may-2026');
     // The Back link renders regardless of load state, which is enough to
     // confirm the route resolved to EventDetailPage.
-    expect(screen.getByRole('link', { name: /back to events/i })).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: /back to events/i })).toBeInTheDocument();
   });
 
-  it('renders JobsPage at /jobs', () => {
+  it('renders JobsPage at /jobs', async () => {
     renderAt('/jobs');
-    expect(screen.getByRole('heading', { level: 1, name: /^jobs$/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: /^jobs$/i })).toBeInTheDocument();
   });
 
-  it('renders CompaniesPage at /companies', () => {
+  it('renders CompaniesPage at /companies', async () => {
     renderAt('/companies');
-    expect(screen.getByRole('heading', { level: 1, name: /^companies$/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: /^companies$/i })).toBeInTheDocument();
   });
 
-  it('renders AboutPage at /about', () => {
+  it('renders AboutPage at /about', async () => {
     renderAt('/about');
-    expect(screen.getByRole('heading', { level: 1, name: /about slc tech pulse/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { level: 1, name: /about slc tech pulse/i }),
+    ).toBeInTheDocument();
   });
 
-  it('renders Header nav + Footer on every route', () => {
+  it('renders Header nav + Footer on every route', async () => {
     renderAt('/about');
-    expect(screen.getByRole('navigation', { name: /primary/i })).toBeInTheDocument();
+    expect(await screen.findByRole('navigation', { name: /primary/i })).toBeInTheDocument();
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
     for (const label of ['Events', 'Jobs', 'Companies', 'About']) {
       expect(screen.getByRole('link', { name: label })).toBeInTheDocument();

@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useJobsStore } from '../store/jobsStore';
 import { useUIStore } from '../store/uiStore';
 import { JobCard } from '../components/jobs/JobCard';
@@ -11,6 +12,7 @@ import { filterJobs } from '../utils/filters';
 import { useJobFiltersUrlSync } from '../hooks/useJobFiltersUrlSync';
 
 export default function JobsPage() {
+  useDocumentTitle('Jobs');
   useJobFiltersUrlSync();
 
   const jobs = useJobsStore((s) => s.jobs);
