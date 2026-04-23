@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { filterEvents, filterJobs } from './filters';
+import { filterCompanies, filterEvents, filterJobs } from './filters';
 import type { Event } from '../types/event';
 import type { Job } from '../types/job';
+import type { Company } from '../types/company';
 
 const NOW = new Date('2026-04-23T12:00:00-06:00');
 
@@ -254,5 +255,101 @@ describe('filterJobs', () => {
       query: 'acme',
     });
     expect(result.map((j) => j.id)).toEqual(['match']);
+  });
+});
+
+const makeCompany = (overrides: Partial<Company>): Company => ({
+  id: '',
+  name: '',
+  description: '',
+  website: 'https://example.com',
+  location: 'Lehi, UT',
+  size: 'mid',
+  topics: [],
+  isHiring: false,
+  isFeatured: false,
+  ...overrides,
+});
+
+const companyDefaults = {
+  hiring: false,
+  size: 'all' as const,
+  topics: [],
+  query: '',
+};
+
+describe('filterCompanies', () => {
+  it('returns all companies with defaults', () => {
+    const companies = [makeCompany({ id: 'a' }), makeCompany({ id: 'b' })];
+    expect(filterCompanies(companies, companyDefaults)).toEqual(companies);
+  });
+
+  it('filters to hiring only', () => {
+    const companies = [
+      makeCompany({ id: 'yes', isHiring: true }),
+      makeCompany({ id: 'no', isHiring: false }),
+    ];
+    expect(
+      filterCompanies(companies, { ...companyDefaults, hiring: true }).map((c) => c.id),
+    ).toEqual(['yes']);
+  });
+
+  it('filters by size', () => {
+    const companies = [
+      makeCompany({ id: 'startup', size: 'startup' }),
+      makeCompany({ id: 'large', size: 'large' }),
+    ];
+    expect(
+      filterCompanies(companies, { ...companyDefaults, size: 'large' }).map((c) => c.id),
+    ).toEqual(['large']);
+  });
+
+  it('OR-combines topic filters', () => {
+    const companies = [
+      makeCompany({ id: 'r', topics: ['React'] }),
+      makeCompany({ id: 'g', topics: ['Go'] }),
+      makeCompany({ id: 'other', topics: ['Design'] }),
+    ];
+    const result = filterCompanies(companies, { ...companyDefaults, topics: ['React', 'Go'] });
+    expect(result.map((c) => c.id).sort()).toEqual(['g', 'r']);
+  });
+
+  it('searches name and description case-insensitively', () => {
+    const companies = [
+      makeCompany({ id: 'lucid', name: 'Lucid Software', description: 'diagramming' }),
+      makeCompany({ id: 'domo', name: 'Domo', description: 'analytics' }),
+      makeCompany({ id: 'other', name: 'Acme', description: 'made by Lucid employees' }),
+    ];
+    expect(
+      filterCompanies(companies, { ...companyDefaults, query: 'LUCID' }).map((c) => c.id).sort(),
+    ).toEqual(['lucid', 'other']);
+  });
+
+  it('AND-composes active filters', () => {
+    const companies = [
+      makeCompany({
+        id: 'match',
+        name: 'Match Co',
+        description: 'React-first',
+        size: 'large',
+        topics: ['React'],
+        isHiring: true,
+      }),
+      makeCompany({
+        id: 'not-hiring',
+        name: 'Match Co',
+        description: 'React-first',
+        size: 'large',
+        topics: ['React'],
+        isHiring: false,
+      }),
+    ];
+    const result = filterCompanies(companies, {
+      hiring: true,
+      size: 'large',
+      topics: ['React'],
+      query: 'match',
+    });
+    expect(result.map((c) => c.id)).toEqual(['match']);
   });
 });

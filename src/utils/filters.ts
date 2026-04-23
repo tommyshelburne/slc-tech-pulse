@@ -1,5 +1,6 @@
 import type { Event } from '../types/event';
 import type { Job } from '../types/job';
+import type { Company, CompanySize } from '../types/company';
 import type {
   EventDateFilter,
   EventFormatFilter,
@@ -145,4 +146,58 @@ export const JOB_TOPIC_OPTIONS = [
   'AI/ML',
   'Fintech',
   'Healthcare',
+] as const;
+
+export type CompanySizeFilter = 'all' | CompanySize;
+
+interface CompanyFilters {
+  hiring: boolean;
+  size: CompanySizeFilter;
+  topics: string[];
+  query: string;
+}
+
+export function filterCompanies(companies: Company[], filters: CompanyFilters): Company[] {
+  const normalizedQuery = filters.query.trim().toLowerCase();
+
+  return companies.filter((company) => {
+    if (filters.hiring && !company.isHiring) return false;
+    if (filters.size !== 'all' && company.size !== filters.size) return false;
+
+    if (filters.topics.length > 0) {
+      const hasAny = filters.topics.some((topic) => company.topics.includes(topic));
+      if (!hasAny) return false;
+    }
+
+    if (normalizedQuery.length > 0) {
+      const haystack = `${company.name} ${company.description}`.toLowerCase();
+      if (!haystack.includes(normalizedQuery)) return false;
+    }
+
+    return true;
+  });
+}
+
+export const COMPANY_SIZE_OPTIONS: { value: CompanySizeFilter; label: string }[] = [
+  { value: 'all', label: 'Any size' },
+  { value: 'startup', label: 'Startup' },
+  { value: 'small', label: 'Small' },
+  { value: 'mid', label: 'Mid' },
+  { value: 'large', label: 'Large' },
+  { value: 'enterprise', label: 'Enterprise' },
+];
+
+export const COMPANY_TOPIC_OPTIONS = [
+  'React',
+  'TypeScript',
+  'Node',
+  'Go',
+  'Python',
+  'Java',
+  'C#',
+  'AI/ML',
+  'Fintech',
+  'Healthcare',
+  'AWS',
+  'GCP',
 ] as const;

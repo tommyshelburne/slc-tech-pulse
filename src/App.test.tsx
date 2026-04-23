@@ -43,7 +43,7 @@ describe('AppRoutes', () => {
 
   it('renders AboutPage at /about', () => {
     renderAt('/about');
-    expect(screen.getByRole('heading', { level: 1, name: /^about$/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /about slc tech pulse/i })).toBeInTheDocument();
   });
 
   it('renders Header nav + Footer on every route', () => {
