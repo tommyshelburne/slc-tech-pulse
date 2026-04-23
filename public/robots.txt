@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://slc-tech-pulse.web.app/sitemap.xml
