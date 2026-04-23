@@ -59,3 +59,24 @@ describe('EventCard', () => {
     expect(screen.queryByText('Frontend')).not.toBeInTheDocument();
   });
 });
+
+describe('EventCard — full variant', () => {
+  it('links the title to the detail route and the Register button to the external URL', () => {
+    renderInRouter(<EventCard event={event} variant="full" />);
+
+    const titleLink = screen.getByRole('link', { name: /react slc · may meetup/i });
+    expect(titleLink).toHaveAttribute('href', '/events/react-slc-may');
+
+    const registerLink = screen.getByRole('link', { name: /register/i });
+    expect(registerLink).toHaveAttribute('href', 'https://meetup.com/react-slc');
+    expect(registerLink).toHaveAttribute('target', '_blank');
+    expect(registerLink).toHaveAttribute('rel', expect.stringContaining('noopener'));
+  });
+
+  it('shows more topic badges than compact', () => {
+    renderInRouter(<EventCard event={event} variant="full" />);
+    expect(screen.getByText('React')).toBeInTheDocument();
+    expect(screen.getByText('TypeScript')).toBeInTheDocument();
+    expect(screen.getByText('Frontend')).toBeInTheDocument();
+  });
+});
