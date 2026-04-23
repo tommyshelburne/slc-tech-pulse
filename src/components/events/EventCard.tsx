@@ -22,7 +22,7 @@ export function EventCard({ event, variant = 'compact' }: EventCardProps) {
           width: 48,
           height: 48,
           borderRadius: 'var(--radius-md)',
-          background: 'var(--accent)',
+          background: 'var(--accent-solid)',
           color: '#fff',
           display: 'flex',
           flexDirection: 'column',

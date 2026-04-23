@@ -35,13 +35,13 @@ export function Hero() {
           Events, jobs, and companies from Utah's tech scene. Updated continuously from meetups,
           company pages, and community submissions.
         </p>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <Link to="/events" style={{ textDecoration: 'none' }}>
+        <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+          <Link to="/events" style={{ textDecoration: 'none', display: 'inline-block' }}>
             <Button variant="primary" size="lg">
               Browse Events
             </Button>
           </Link>
-          <Link to="/jobs" style={{ textDecoration: 'none' }}>
+          <Link to="/jobs" style={{ textDecoration: 'none', display: 'inline-block' }}>
             <Button variant="outline" size="lg">
               View Jobs
             </Button>

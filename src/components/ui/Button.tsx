@@ -27,7 +27,7 @@ export function Button({ variant = 'primary', size = 'md', children, style, ...p
 
   const variants: Record<string, React.CSSProperties> = {
     primary: {
-      background: 'var(--accent)',
+      background: 'var(--accent-solid)',
       color: '#fff',
     },
     ghost: {

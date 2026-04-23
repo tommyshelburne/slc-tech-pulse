@@ -8,8 +8,9 @@
   --text-primary:   #f0f0f8;
   --text-secondary: #8888a8;
   --text-muted:     #7e7ea0;
-  --accent:         #6366f1;
-  --accent-dim:     rgba(99,102,241,0.12);
+  --accent:         #818cf8;        /* indigo-400, for text on dark surfaces */
+  --accent-solid:   #4f46e5;        /* indigo-600, for white-text-on-accent surfaces */
+  --accent-dim:     rgba(129,140,248,0.14);
   --success:        #22c55e;
   --warning:        #f59e0b;
   --danger:         #ef4444;
