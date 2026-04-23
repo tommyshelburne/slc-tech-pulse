@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { SearchInput } from '../ui/SearchInput';
 import { useUIStore } from '../../store/uiStore';
 
@@ -14,6 +15,13 @@ export function Header() {
   const setSearchQuery = useUIStore((s) => s.setSearchQuery);
   const setSearchOpen = useUIStore((s) => s.setSearchOpen);
 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
   return (
     <header
       style={{
@@ -22,7 +30,6 @@ export function Header() {
         zIndex: 20,
         background: 'var(--bg-surface)',
         borderBottom: '1px solid var(--border)',
-        padding: '12px 24px',
       }}
     >
       <nav
@@ -32,9 +39,9 @@ export function Header() {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '16px',
-          flexWrap: 'wrap',
           maxWidth: '1200px',
           margin: '0 auto',
+          padding: '12px 24px',
         }}
       >
         <NavLink to="/" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -46,32 +53,89 @@ export function Header() {
           </span>
         </NavLink>
 
-        <ul
+        <div className="header-desktop-nav">
+          <ul
+            style={{
+              display: 'flex',
+              gap: '20px',
+              listStyle: 'none',
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            {NAV_LINKS.map((link) => (
+              <li key={link.to}>
+                <NavLink to={link.to} style={navLinkStyle}>
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+
+          <div style={{ maxWidth: '240px', width: '100%' }}>
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search events, jobs, companies"
+              onFocus={() => setSearchOpen(true)}
+              onBlur={() => setSearchOpen(false)}
+            />
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="header-mobile-toggle"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="header-mobile-panel"
+          onClick={() => setMenuOpen((v) => !v)}
           style={{
-            display: 'flex',
-            gap: '20px',
-            listStyle: 'none',
-            margin: 0,
-            padding: 0,
+            background: 'transparent',
+            border: '1px solid var(--border-mid)',
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--text-primary)',
+            padding: '8px 10px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            lineHeight: 1,
           }}
         >
-          {NAV_LINKS.map((link) => (
-            <li key={link.to}>
-              <NavLink
-                to={link.to}
-                style={({ isActive }) => ({
-                  color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                })}
-              >
-                {link.label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+          {menuOpen ? '✕' : '☰'}
+        </button>
+      </nav>
 
-        <div style={{ maxWidth: '240px', width: '100%' }}>
+      {menuOpen && (
+        <div
+          id="header-mobile-panel"
+          className="header-mobile-panel"
+          style={{
+            flexDirection: 'column',
+            gap: '16px',
+            padding: '16px 24px 24px',
+            borderTop: '1px solid var(--border)',
+            background: 'var(--bg-surface)',
+          }}
+        >
+          <ul
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              listStyle: 'none',
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            {NAV_LINKS.map((link) => (
+              <li key={link.to}>
+                <NavLink to={link.to} style={navLinkStyle}>
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
@@ -80,7 +144,15 @@ export function Header() {
             onBlur={() => setSearchOpen(false)}
           />
         </div>
-      </nav>
+      )}
     </header>
   );
+}
+
+function navLinkStyle({ isActive }: { isActive: boolean }): React.CSSProperties {
+  return {
+    color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
+    fontSize: '13px',
+    fontWeight: 500,
+  };
 }

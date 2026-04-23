@@ -1,24 +1,29 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useCompaniesStore } from '../store/companiesStore';
+import { useUIStore } from '../store/uiStore';
 import { CompanyCard } from '../components/companies/CompanyCard';
 import { CompanyFilters } from '../components/companies/CompanyFilters';
 import { Spinner } from '../components/ui/Spinner';
 import { EmptyState } from '../components/ui/EmptyState';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
-import { filterCompanies, type CompanySizeFilter } from '../utils/filters';
+import { filterCompanies } from '../utils/filters';
+import { useCompanyFiltersUrlSync } from '../hooks/useCompanyFiltersUrlSync';
 
 export default function CompaniesPage() {
   useDocumentTitle('Companies');
+  useCompanyFiltersUrlSync();
+
   const companies = useCompaniesStore((s) => s.companies);
   const loading = useCompaniesStore((s) => s.loading);
   const error = useCompaniesStore((s) => s.error);
 
-  const [hiring, setHiring] = useState(false);
-  const [size, setSize] = useState<CompanySizeFilter>('all');
-  const [topics, setTopics] = useState<string[]>([]);
-  const [query, setQuery] = useState('');
+  const hiring = useUIStore((s) => s.companyHiringFilter);
+  const size = useUIStore((s) => s.companySizeFilter);
+  const topics = useUIStore((s) => s.companyTopicFilter);
+  const query = useUIStore((s) => s.searchQuery);
+  const clearFilters = useUIStore((s) => s.clearFilters);
 
   useEffect(() => {
     const state = useCompaniesStore.getState();
@@ -37,13 +42,6 @@ export default function CompaniesPage() {
 
   const hasActiveFilters = hiring || size !== 'all' || topics.length > 0 || query.length > 0;
 
-  const clear = () => {
-    setHiring(false);
-    setSize('all');
-    setTopics([]);
-    setQuery('');
-  };
-
   return (
     <div>
       <header
@@ -60,17 +58,7 @@ export default function CompaniesPage() {
         </div>
       </header>
 
-      <CompanyFilters
-        hiring={hiring}
-        size={size}
-        topics={topics}
-        query={query}
-        onHiringChange={setHiring}
-        onSizeChange={setSize}
-        onTopicsChange={setTopics}
-        onQueryChange={setQuery}
-        onClear={clear}
-      />
+      <CompanyFilters />
 
       {loading && companies.length === 0 ? (
         <Spinner />
@@ -84,7 +72,7 @@ export default function CompaniesPage() {
               subtitle="Try broadening a filter or clearing them all."
             />
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button variant="outline" size="sm" onClick={clear}>
+              <Button variant="outline" size="sm" onClick={clearFilters}>
                 Clear filters
               </Button>
             </div>

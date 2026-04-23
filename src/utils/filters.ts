@@ -1,7 +1,8 @@
 import type { Event } from '../types/event';
 import type { Job } from '../types/job';
-import type { Company, CompanySize } from '../types/company';
+import type { Company } from '../types/company';
 import type {
+  CompanySizeFilter,
   EventDateFilter,
   EventFormatFilter,
   JobLevelFilter,
@@ -9,6 +10,8 @@ import type {
   JobTypeFilter,
 } from '../store/uiStore';
 import { isThisMonth, isThisWeek, isNextMonth } from './dates';
+
+export type { CompanySizeFilter } from '../store/uiStore';
 
 interface EventFilters {
   topics: string[];
@@ -147,8 +150,6 @@ export const JOB_TOPIC_OPTIONS = [
   'Fintech',
   'Healthcare',
 ] as const;
-
-export type CompanySizeFilter = 'all' | CompanySize;
 
 interface CompanyFilters {
   hiring: boolean;

@@ -1,39 +1,24 @@
-import {
-  COMPANY_SIZE_OPTIONS,
-  COMPANY_TOPIC_OPTIONS,
-  type CompanySizeFilter,
-} from '../../utils/filters';
+import { useUIStore } from '../../store/uiStore';
+import { COMPANY_SIZE_OPTIONS, COMPANY_TOPIC_OPTIONS } from '../../utils/filters';
 import { Button } from '../ui/Button';
 import { SearchInput } from '../ui/SearchInput';
 
-interface CompanyFiltersProps {
-  hiring: boolean;
-  size: CompanySizeFilter;
-  topics: string[];
-  query: string;
-  onHiringChange: (value: boolean) => void;
-  onSizeChange: (value: CompanySizeFilter) => void;
-  onTopicsChange: (value: string[]) => void;
-  onQueryChange: (value: string) => void;
-  onClear: () => void;
-}
+export function CompanyFilters() {
+  const hiring = useUIStore((s) => s.companyHiringFilter);
+  const size = useUIStore((s) => s.companySizeFilter);
+  const topics = useUIStore((s) => s.companyTopicFilter);
+  const query = useUIStore((s) => s.searchQuery);
+  const setHiring = useUIStore((s) => s.setCompanyHiringFilter);
+  const setSize = useUIStore((s) => s.setCompanySizeFilter);
+  const setTopics = useUIStore((s) => s.setCompanyTopicFilter);
+  const setQuery = useUIStore((s) => s.setSearchQuery);
+  const clearFilters = useUIStore((s) => s.clearFilters);
 
-export function CompanyFilters({
-  hiring,
-  size,
-  topics,
-  query,
-  onHiringChange,
-  onSizeChange,
-  onTopicsChange,
-  onQueryChange,
-  onClear,
-}: CompanyFiltersProps) {
   const toggleTopic = (topic: string) => {
     if (topics.includes(topic)) {
-      onTopicsChange(topics.filter((t) => t !== topic));
+      setTopics(topics.filter((t) => t !== topic));
     } else {
-      onTopicsChange([...topics, topic]);
+      setTopics([...topics, topic]);
     }
   };
 
@@ -75,7 +60,7 @@ export function CompanyFilters({
         <button
           type="button"
           aria-pressed={hiring}
-          onClick={() => onHiringChange(!hiring)}
+          onClick={() => setHiring(!hiring)}
           style={pillStyle(hiring)}
         >
           Hiring only
@@ -89,7 +74,7 @@ export function CompanyFilters({
                 key={opt.value}
                 type="button"
                 aria-pressed={active}
-                onClick={() => onSizeChange(opt.value)}
+                onClick={() => setSize(opt.value)}
                 style={pillStyle(active)}
               >
                 {opt.label}
@@ -101,13 +86,13 @@ export function CompanyFilters({
         <div style={{ flex: 1, minWidth: '200px' }}>
           <SearchInput
             value={query}
-            onChange={onQueryChange}
+            onChange={setQuery}
             placeholder="Search name or description"
           />
         </div>
 
         {hasActiveFilters && (
-          <Button variant="ghost" size="sm" onClick={onClear}>
+          <Button variant="ghost" size="sm" onClick={clearFilters}>
             Clear filters
           </Button>
         )}
