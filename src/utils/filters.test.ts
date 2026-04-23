@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { filterEvents } from './filters';
+import { filterEvents, filterJobs } from './filters';
 import type { Event } from '../types/event';
+import type { Job } from '../types/job';
 
 const NOW = new Date('2026-04-23T12:00:00-06:00');
 
@@ -136,5 +137,122 @@ describe('filterEvents', () => {
   it('treats whitespace-only query as no query', () => {
     const events = [makeEvent({ id: 'a', title: 'Anything' })];
     expect(filterEvents(events, { ...defaults, query: '   ' }, NOW)).toEqual(events);
+  });
+});
+
+const makeJob = (overrides: Partial<Job>): Job => ({
+  id: '',
+  title: '',
+  company: '',
+  location: 'Lehi, UT',
+  type: 'full-time',
+  level: 'mid',
+  description: '',
+  url: '',
+  topics: [],
+  postedAt: '',
+  isHighlighted: false,
+  source: 'manual',
+  ...overrides,
+});
+
+const jobDefaults = {
+  type: 'all' as const,
+  level: 'all' as const,
+  location: 'all' as const,
+  topics: [],
+  query: '',
+};
+
+describe('filterJobs', () => {
+  it('returns all jobs with default filters', () => {
+    const jobs = [makeJob({ id: 'a' }), makeJob({ id: 'b' })];
+    expect(filterJobs(jobs, jobDefaults)).toEqual(jobs);
+  });
+
+  it('filters by type', () => {
+    const jobs = [
+      makeJob({ id: 'ft', type: 'full-time' }),
+      makeJob({ id: 'intern', type: 'internship' }),
+    ];
+    expect(filterJobs(jobs, { ...jobDefaults, type: 'internship' }).map((j) => j.id)).toEqual([
+      'intern',
+    ]);
+  });
+
+  it('filters by level', () => {
+    const jobs = [
+      makeJob({ id: 'jr', level: 'junior' }),
+      makeJob({ id: 'sr', level: 'senior' }),
+    ];
+    expect(filterJobs(jobs, { ...jobDefaults, level: 'senior' }).map((j) => j.id)).toEqual(['sr']);
+  });
+
+  it('filters by location category', () => {
+    const jobs = [
+      makeJob({ id: 'on-site', location: 'Lehi, UT' }),
+      makeJob({ id: 'remote', location: 'Remote — US' }),
+      makeJob({ id: 'hybrid', location: 'Hybrid — SLC' }),
+    ];
+    expect(filterJobs(jobs, { ...jobDefaults, location: 'remote' }).map((j) => j.id)).toEqual([
+      'remote',
+    ]);
+    expect(filterJobs(jobs, { ...jobDefaults, location: 'hybrid' }).map((j) => j.id)).toEqual([
+      'hybrid',
+    ]);
+    expect(filterJobs(jobs, { ...jobDefaults, location: 'on-site' }).map((j) => j.id)).toEqual([
+      'on-site',
+    ]);
+  });
+
+  it('OR-combines topic filters', () => {
+    const jobs = [
+      makeJob({ id: 'react', topics: ['React'] }),
+      makeJob({ id: 'fin', topics: ['Fintech'] }),
+      makeJob({ id: 'other', topics: ['Design'] }),
+    ];
+    const result = filterJobs(jobs, { ...jobDefaults, topics: ['React', 'Fintech'] });
+    expect(result.map((j) => j.id).sort()).toEqual(['fin', 'react']);
+  });
+
+  it('searches title and company case-insensitively', () => {
+    const jobs = [
+      makeJob({ id: 'lucid', title: 'Frontend Engineer', company: 'Lucid Software' }),
+      makeJob({ id: 'podium', title: 'Senior Engineer', company: 'Podium' }),
+    ];
+    expect(filterJobs(jobs, { ...jobDefaults, query: 'LUCID' }).map((j) => j.id)).toEqual([
+      'lucid',
+    ]);
+  });
+
+  it('AND-composes all active filters', () => {
+    const jobs = [
+      makeJob({
+        id: 'match',
+        type: 'full-time',
+        level: 'senior',
+        location: 'Remote — US',
+        topics: ['React'],
+        title: 'Staff SWE',
+        company: 'Acme',
+      }),
+      makeJob({
+        id: 'wrong-level',
+        type: 'full-time',
+        level: 'junior',
+        location: 'Remote — US',
+        topics: ['React'],
+        title: 'Staff SWE',
+        company: 'Acme',
+      }),
+    ];
+    const result = filterJobs(jobs, {
+      type: 'full-time',
+      level: 'senior',
+      location: 'remote',
+      topics: ['React'],
+      query: 'acme',
+    });
+    expect(result.map((j) => j.id)).toEqual(['match']);
   });
 });
