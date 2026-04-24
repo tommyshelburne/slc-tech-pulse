@@ -46,6 +46,71 @@ function isUtahLocation(location: string | undefined | null): boolean {
   return UTAH_CITIES.some((c) => s.includes(c.toLowerCase()));
 }
 
+const NON_US_MARKERS =
+  /\b(india|canada|mexico|brazil|argentina|colombia|united kingdom|england|scotland|ireland|germany|france|spain|italy|netherlands|poland|ukraine|romania|sweden|norway|denmark|finland|portugal|greece|turkey|israel|uae|dubai|singapore|japan|china|hong kong|taiwan|korea|philippines|indonesia|vietnam|thailand|australia|new zealand|south africa|egypt|nigeria|kenya)\b|,\s*(nl|uk|aus|ind|can|mex|gbr|deu|fra|esp|ita|ire|pol|rou|swe|nor|dnk|fin|prt|isr|are|sgp|jpn|chn|hkg|twn|kor|phl|idn|vnm|tha|aut|nzl|zaf|egy|nga|ken)\b/i;
+
+function isUSCountry(country: string | undefined | null): boolean {
+  if (!country) return false;
+  const s = country.trim().toLowerCase();
+  return s === 'us' || s === 'usa' || s === 'united states' || s === 'united states of america';
+}
+
+function mentionsUS(location: string | undefined | null): boolean {
+  if (!location) return false;
+  const s = location.toLowerCase();
+  if (/,\s*us(a)?\b/i.test(location)) return true;
+  if (/united states|usa\b/i.test(s)) return true;
+  // US state abbreviation anywhere (", XX")
+  return /,\s*[A-Z]{2}\b/.test(location);
+}
+
+function isRemoteSignal(
+  location: string | undefined | null,
+  isRemote: boolean | undefined,
+  workplaceType: string | undefined | null,
+): boolean {
+  if (isRemote === true) return true;
+  if (workplaceType && /remote/i.test(workplaceType)) return true;
+  if (location && /\bremote\b/i.test(location)) return true;
+  return false;
+}
+
+interface LocationInput {
+  location: string | undefined | null;
+  country?: string | null;
+  isRemote?: boolean;
+  workplaceType?: string | null;
+}
+
+function shouldIncludeLocation({ location, country, isRemote, workplaceType }: LocationInput): boolean {
+  // Hard-reject known-non-US country
+  if (country && !isUSCountry(country)) return false;
+  if (location && NON_US_MARKERS.test(location)) return false;
+
+  if (isUtahLocation(location)) return true;
+
+  if (isRemoteSignal(location, isRemote, workplaceType)) {
+    if (isUSCountry(country)) return true;
+    if (mentionsUS(location)) return true;
+    // Ambiguous remote (no country hint) → reject to stay honest
+    return false;
+  }
+
+  return false;
+}
+
+const TECH_TITLE_RE =
+  /\b(engineer|engineering|developer|programmer|architect|dev[\s-]?ops|sre|reliability|sdet|qa|data scientist|data engineer|data analyst|analytics engineer|ml engineer|ml researcher|ai engineer|ai researcher|ai scientist|machine learning|research scientist|designer|ux|ui designer|technical writer|technical program|technical product|product manager|group pm|security|infosec|software|full[\s-]?stack|front[\s-]?end|back[\s-]?end|ios|android|mobile developer|mobile engineer|platform|infrastructure|cloud engineer|solutions engineer|sales engineer|scientist)\b/i;
+
+const TECH_DEPT_RE =
+  /^(engineering|technology|tech\b|design|data\b|research|security|r&d|information technology|it\b|platform|infrastructure|ai\b|ml\b|analytics)/i;
+
+function isTechRole(title: string, department?: string | null): boolean {
+  if (TECH_TITLE_RE.test(title)) return true;
+  if (department && TECH_DEPT_RE.test(department.trim())) return true;
+  return false;
+}
+
 const LEVEL_PATTERNS: Array<[RegExp, JobLevel]> = [
   [/\b(intern|internship)\b/i, 'junior'],
   [/\b(junior|jr\.?|entry[- ]level|new grad|associate)\b/i, 'junior'],
@@ -142,7 +207,8 @@ async function fetchGreenhouse(company: Company): Promise<NormalizedJob[]> {
   };
 
   return data.jobs
-    .filter((j) => isUtahLocation(j.location?.name))
+    .filter((j) => shouldIncludeLocation({ location: j.location?.name }))
+    .filter((j) => isTechRole(j.title))
     .map((j) => {
       const employment = j.metadata?.find((m) => /employment/i.test(m.name))?.value ?? undefined;
       return {
@@ -178,11 +244,22 @@ async function fetchAshby(company: Company): Promise<NormalizedJob[]> {
       publishedAt: string;
       jobUrl: string;
       descriptionHtml?: string;
+      isRemote?: boolean;
+      workplaceType?: string;
+      address?: { postalAddress?: { addressCountry?: string } };
     }>;
   };
 
   return data.jobs
-    .filter((j) => isUtahLocation(j.location))
+    .filter((j) =>
+      shouldIncludeLocation({
+        location: j.location,
+        country: j.address?.postalAddress?.addressCountry,
+        isRemote: j.isRemote,
+        workplaceType: j.workplaceType,
+      }),
+    )
+    .filter((j) => isTechRole(j.title, j.department ?? j.team))
     .map((j) => {
       const description = j.descriptionHtml
         ? truncate(stripHtml(j.descriptionHtml), 400)
@@ -214,6 +291,8 @@ async function fetchLever(company: Company): Promise<NormalizedJob[]> {
     text: string;
     hostedUrl: string;
     createdAt: number;
+    country?: string;
+    workplaceType?: string;
     categories?: {
       location?: string;
       team?: string;
@@ -224,7 +303,14 @@ async function fetchLever(company: Company): Promise<NormalizedJob[]> {
   }>;
 
   return data
-    .filter((j) => isUtahLocation(j.categories?.location))
+    .filter((j) =>
+      shouldIncludeLocation({
+        location: j.categories?.location,
+        country: j.country,
+        workplaceType: j.workplaceType,
+      }),
+    )
+    .filter((j) => isTechRole(j.text, j.categories?.team ?? j.categories?.department))
     .map((j) => ({
       id: `lever-${company.atsSlug}-${j.id}`,
       title: j.text,
@@ -310,8 +396,8 @@ async function main(): Promise<void> {
   console.log(`\nTotal: ${allJobs.length} jobs from ${companies.length - errors.length}/${companies.length} sources`);
 
   if (dryRun) {
-    console.log('\n--dry-run: no Firestore writes. Sample:');
-    for (const j of allJobs.slice(0, 3)) {
+    console.log('\n--dry-run: no Firestore writes. All jobs:');
+    for (const j of allJobs) {
       console.log(`  - [${j.source}] ${j.title} · ${j.company} · ${j.location} · ${j.level}`);
     }
     process.exit(0);
