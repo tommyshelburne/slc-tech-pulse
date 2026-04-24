@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+# SLC Tech Pulse
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Event, company, and job aggregation for the Salt Lake City / Lehi tech scene.
 
-Currently, two official plugins are available:
+Live jobs are pulled from Greenhouse, Lever, and Ashby boards and filtered to US-remote + whitelisted tech roles at local companies.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+- React 19 + TypeScript + Vite
+- React Router v7
+- Zustand (global state)
+- TailwindCSS v4 with CSS custom properties (`src/styles/tokens.css`)
+- Firebase (Firestore for data, Hosting for deployment)
+- date-fns
+- Vitest + React Testing Library
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Quickstart
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+cp .env.local.example .env.local   # fill in VITE_FIREBASE_* values
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The dev server runs on the port Vite picks (default 5173).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Firebase admin scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Seeding and job aggregation run under a service account. Place admin credentials at `.secrets/firebase-admin.json` (gitignored) before running:
+
+```bash
+npm run seed             # one-time: populate Firestore with companies/events
+npm run aggregate:jobs   # pull live jobs from ATS boards into Firestore
 ```
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | Type-check and build production bundle |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run Vitest once |
+| `npm run test:watch` | Run Vitest in watch mode |
+| `npm run seed` | Seed Firestore with initial data |
+| `npm run aggregate:jobs` | Aggregate live jobs from ATS providers |
+| `npm run deploy` | Deploy hosting + rules to Firebase |
+| `npm run deploy:hosting` | Deploy hosting only |
+| `npm run deploy:rules` | Deploy Firestore rules only |
+
+## Structure
+
+```
+src/
+  components/    Reusable UI
+  pages/         Route-level pages (Home, Events, Companies, Jobs, About)
+  services/      Firestore access — components never hit Firestore directly
+  store/         Zustand stores
+  hooks/         Custom React hooks
+  styles/        Tokens + global CSS
+  types/         Shared TypeScript types
+  utils/         Pure helpers
+scripts/
+  seed.ts            Seed Firestore collections
+  aggregate-jobs.ts  Fetch + filter ATS job postings
+features/            Gherkin BDD scenarios
+```
+
+Firestore collections: `events`, `jobs`, `companies`.
+
+## Conventions
+
+- Explicit prop interfaces on every component; no `any`
+- Named exports only (pages may default-export for routing)
+- PascalCase for components, camelCase for utils / services / stores
+- Styling via Tailwind utilities + `var(--token-name)` for colors
+- Shared state lives in Zustand — no Context API, no `useState` for cross-component data
+- All Firestore reads/writes go through `src/services/`
+
+## Deployment
+
+Firebase Hosting. `npm run deploy` ships the current build and Firestore rules. Hosting-only and rules-only variants are available via the scripts above.
