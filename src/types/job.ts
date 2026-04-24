@@ -16,5 +16,5 @@ export interface Job {
   postedAt: string;
   expiresAt?: string;
   isHighlighted: boolean;
-  source: 'linkedin' | 'indeed' | 'manual' | 'company';
+  source: 'linkedin' | 'indeed' | 'manual' | 'company' | 'greenhouse' | 'lever' | 'ashby';
 }

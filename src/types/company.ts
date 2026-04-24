@@ -1,4 +1,5 @@
 export type CompanySize = 'startup' | 'small' | 'mid' | 'large' | 'enterprise';
+export type AtsProvider = 'greenhouse' | 'lever' | 'ashby';
 
 export interface Company {
   id: string;
@@ -13,4 +14,6 @@ export interface Company {
   linkedinUrl?: string;
   isHiring: boolean;
   isFeatured: boolean;
+  ats?: AtsProvider;
+  atsSlug?: string;
 }
