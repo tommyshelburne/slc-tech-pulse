@@ -3,7 +3,6 @@ import { useUIStore } from './uiStore';
 
 beforeEach(() => {
   useUIStore.getState().clearFilters();
-  useUIStore.setState({ searchOpen: false });
 });
 
 describe('useUIStore', () => {
@@ -35,24 +34,20 @@ describe('useUIStore', () => {
     expect(useUIStore.getState().jobLevelFilter).toBe('senior');
   });
 
-  it('tracks search query and open state independently', () => {
+  it('tracks the search query', () => {
     useUIStore.getState().setSearchQuery('react');
-    useUIStore.getState().setSearchOpen(true);
     expect(useUIStore.getState().searchQuery).toBe('react');
-    expect(useUIStore.getState().searchOpen).toBe(true);
   });
 
-  it('clearFilters resets every filter but does not touch searchOpen', () => {
+  it('clearFilters resets every filter including search query', () => {
     useUIStore.getState().setEventTopicFilter(['React']);
     useUIStore.getState().setJobTypeFilter('internship');
     useUIStore.getState().setSearchQuery('x');
-    useUIStore.getState().setSearchOpen(true);
 
     useUIStore.getState().clearFilters();
 
     expect(useUIStore.getState().eventTopicFilter).toEqual([]);
     expect(useUIStore.getState().jobTypeFilter).toBe('all');
     expect(useUIStore.getState().searchQuery).toBe('');
-    expect(useUIStore.getState().searchOpen).toBe(true);
   });
 });

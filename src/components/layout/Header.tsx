@@ -13,7 +13,6 @@ const NAV_LINKS = [
 export function Header() {
   const searchQuery = useUIStore((s) => s.searchQuery);
   const setSearchQuery = useUIStore((s) => s.setSearchQuery);
-  const setSearchOpen = useUIStore((s) => s.setSearchOpen);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
@@ -77,8 +76,6 @@ export function Header() {
               value={searchQuery}
               onChange={setSearchQuery}
               placeholder="Search events, jobs, companies"
-              onFocus={() => setSearchOpen(true)}
-              onBlur={() => setSearchOpen(false)}
             />
           </div>
         </div>
@@ -140,8 +137,6 @@ export function Header() {
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Search events, jobs, companies"
-            onFocus={() => setSearchOpen(true)}
-            onBlur={() => setSearchOpen(false)}
           />
         </div>
       )}

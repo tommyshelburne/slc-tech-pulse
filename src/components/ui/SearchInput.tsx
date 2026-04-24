@@ -4,16 +4,12 @@ interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  onFocus?: () => void;
-  onBlur?: () => void;
 }
 
 export function SearchInput({
   value,
   onChange,
   placeholder = 'Search...',
-  onFocus,
-  onBlur,
 }: SearchInputProps) {
   return (
     <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
@@ -35,8 +31,6 @@ export function SearchInput({
         value={value}
         onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
         placeholder={placeholder}
-        onFocus={onFocus}
-        onBlur={onBlur}
         style={{
           background: 'var(--bg-elevated)',
           border: '1px solid var(--border)',

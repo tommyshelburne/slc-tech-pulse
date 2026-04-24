@@ -20,7 +20,6 @@ interface UIState {
   companySizeFilter: CompanySizeFilter;
   companyTopicFilter: string[];
   searchQuery: string;
-  searchOpen: boolean;
   setEventTopicFilter: (topics: string[]) => void;
   setEventDateFilter: (filter: EventDateFilter) => void;
   setEventFormatFilter: (filter: EventFormatFilter) => void;
@@ -32,7 +31,6 @@ interface UIState {
   setCompanySizeFilter: (filter: CompanySizeFilter) => void;
   setCompanyTopicFilter: (topics: string[]) => void;
   setSearchQuery: (q: string) => void;
-  setSearchOpen: (open: boolean) => void;
   clearFilters: () => void;
 }
 
@@ -52,7 +50,6 @@ const initialFilters = {
 
 export const useUIStore = create<UIState>((set) => ({
   ...initialFilters,
-  searchOpen: false,
   setEventTopicFilter: (eventTopicFilter) => set({ eventTopicFilter }),
   setEventDateFilter: (eventDateFilter) => set({ eventDateFilter }),
   setEventFormatFilter: (eventFormatFilter) => set({ eventFormatFilter }),
@@ -64,6 +61,5 @@ export const useUIStore = create<UIState>((set) => ({
   setCompanySizeFilter: (companySizeFilter) => set({ companySizeFilter }),
   setCompanyTopicFilter: (companyTopicFilter) => set({ companyTopicFilter }),
   setSearchQuery: (searchQuery) => set({ searchQuery }),
-  setSearchOpen: (searchOpen) => set({ searchOpen }),
   clearFilters: () => set({ ...initialFilters }),
 }));
