@@ -1,0 +1,36 @@
+name: Aggregate events
+
+on:
+  schedule:
+    # Daily at 12:00 UTC (06:00 MDT / 05:00 MST) — 1h before the jobs run.
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Write service account credentials
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          mkdir -p .secrets
+          echo "$FIREBASE_SERVICE_ACCOUNT" > .secrets/firebase-admin.json
+
+      - name: Run aggregator
+        env:
+          MEETUP_CLIENT_KEY: ${{ secrets.MEETUP_CLIENT_KEY }}
+          MEETUP_SIGNING_KEY_ID: ${{ secrets.MEETUP_SIGNING_KEY_ID }}
+          MEETUP_MEMBER_ID: ${{ secrets.MEETUP_MEMBER_ID }}
+          MEETUP_PRIVATE_KEY: ${{ secrets.MEETUP_PRIVATE_KEY }}
+        run: npm run aggregate:events

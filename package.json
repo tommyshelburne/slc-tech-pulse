@@ -12,6 +12,7 @@
     "test:watch": "vitest",
     "seed": "GOOGLE_APPLICATION_CREDENTIALS=.secrets/firebase-admin.json tsx scripts/seed.ts",
     "aggregate:jobs": "GOOGLE_APPLICATION_CREDENTIALS=.secrets/firebase-admin.json tsx scripts/aggregate-jobs.ts",
+    "aggregate:events": "GOOGLE_APPLICATION_CREDENTIALS=.secrets/firebase-admin.json tsx scripts/aggregate-events.ts",
     "deploy:rules": "firebase deploy --only firestore:rules",
     "deploy:hosting": "firebase deploy --only hosting",
     "deploy": "firebase deploy"
