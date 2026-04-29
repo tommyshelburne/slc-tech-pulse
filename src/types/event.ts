@@ -13,7 +13,7 @@ export interface Event {
   topics: string[];
   company?: string;
   isFeatured: boolean;
-  source: 'meetup' | 'eventbrite' | 'manual' | 'company';
+  source: 'meetup' | 'luma' | 'eventbrite' | 'manual' | 'company';
   createdAt: string;
   updatedAt: string;
 }

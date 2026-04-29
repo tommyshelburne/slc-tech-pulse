@@ -28,11 +28,11 @@ export default function AboutPage() {
 
       <Section title="How data is sourced">
         <p>
-          <strong style={{ color: 'var(--text-primary)' }}>Events</strong> are pulled from public
-          Meetup groups across the Wasatch Front (Silicon Slopes, Utah JavaScript, Utah Python, SLC
-          React, Women in Tech Utah, Utah AI/ML, and others) via the Meetup GraphQL API. Each
-          listing links back to the original event page on Meetup so RSVPs and details stay with
-          the organizer.
+          <strong style={{ color: 'var(--text-primary)' }}>Events</strong> are pulled from lu.ma's
+          Salt Lake City discovery feed and filtered to Utah tech (AI, startups, healthtech,
+          design, and adjacent communities). Each listing links back to the lu.ma event page so
+          RSVPs and details stay with the organizer. Meetup is on the roadmap once OAuth access is
+          provisioned.
         </p>
         <p>
           <strong style={{ color: 'var(--text-primary)' }}>Jobs</strong> are pulled directly from
@@ -62,9 +62,9 @@ export default function AboutPage() {
             a day or so of being posted upstream.
           </li>
           <li>
-            We don't ingest Eventbrite or LinkedIn directly — those platforms don't offer open
-            APIs. Events posted only there won't appear unless they're cross-listed on Meetup or
-            submitted by an organizer.
+            Events posted only on Meetup, Eventbrite, or LinkedIn won't appear unless they're
+            cross-listed on lu.ma or submitted by the organizer. Many SLC tech communities post to
+            both, so coverage is reasonable but not exhaustive.
           </li>
           <li>
             If a company isn't on a supported ATS (Greenhouse, Lever, Ashby), their roles won't
