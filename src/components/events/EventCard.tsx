@@ -101,16 +101,16 @@ export function EventCard({ event, variant = 'compact' }: EventCardProps) {
             <Badge key={topic} label={topic} />
           ))}
           {variant === 'full' && (
-            <a
+            <Button
               href={event.url}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ marginLeft: 'auto', textDecoration: 'none' }}
+              variant="outline"
+              size="sm"
+              style={{ marginLeft: 'auto' }}
             >
-              <Button variant="outline" size="sm">
-                View event page →
-              </Button>
-            </a>
+              View event page →
+            </Button>
           )}
         </div>
       </div>

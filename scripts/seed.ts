@@ -14,8 +14,6 @@ const serviceAccount = JSON.parse(readFileSync(SERVICE_ACCOUNT_PATH, 'utf8'));
 initializeApp({ credential: cert(serviceAccount) });
 const db = getFirestore();
 
-const NOW = new Date().toISOString();
-
 const companies: Company[] = [
   {
     id: 'lucid',
@@ -185,358 +183,172 @@ const companies: Company[] = [
     ats: 'ashby',
     atsSlug: 'canopy',
   },
-];
-
-const events: Event[] = [
   {
-    id: 'silicon-slopes-summit-2026-afterparty',
-    title: 'Silicon Slopes Summit 2026 Afterparty',
-    shortDescription:
-      'Wrap the summit with live music, food trucks, and unstructured networking at the Adobe amphitheater.',
+    id: 'recursion',
+    name: 'Recursion Pharmaceuticals',
     description:
-      "The official Silicon Slopes Summit afterparty. Music, food trucks, and unstructured networking with the broader Utah tech community. Bring your badge — summit attendees get priority entry, but the event is open to all.",
-    date: '2026-05-02T19:00:00-06:00',
-    endDate: '2026-05-02T23:00:00-06:00',
-    location: 'Lehi, UT',
-    venue: 'Adobe Lehi Amphitheater',
-    isOnline: false,
-    url: 'https://siliconslopes.com/',
-    topics: ['Networking', 'Startup'],
-    company: 'adobe-lehi',
-    isFeatured: true,
-    source: 'manual',
-    createdAt: NOW,
-    updatedAt: NOW,
-  },
-  {
-    id: 'react-slc-may-2026',
-    title: 'React SLC · May Meetup',
-    shortDescription: 'Lightning talks on React Server Components and the new use() hook, plus pizza.',
-    description:
-      'Monthly React SLC meetup. This month: two lightning talks — "Shipping React 19 in production" and "Suspense-first data fetching patterns." Doors at 6pm, talks at 6:30. Pizza sponsored by Lucid.',
-    date: '2026-05-15T18:00:00-06:00',
-    endDate: '2026-05-15T20:30:00-06:00',
+      'TechBio company decoding biology with industrial-scale machine learning to discover novel medicines. SLC headquarters with a wet lab and ML platform team.',
+    website: 'https://www.recursion.com',
     location: 'Salt Lake City, UT',
-    venue: 'Impact Hub SLC',
-    isOnline: false,
-    url: 'https://www.meetup.com/',
-    topics: ['React', 'TypeScript', 'Frontend'],
+    size: 'large',
+    topics: ['Python', 'AI/ML', 'Data', 'AWS'],
+    careersUrl: 'https://www.recursion.com/careers',
+    isHiring: true,
     isFeatured: true,
-    source: 'meetup',
-    createdAt: NOW,
-    updatedAt: NOW,
+    ats: 'greenhouse',
+    atsSlug: 'recursionpharmaceuticals',
   },
   {
-    id: 'utah-aiml-meetup-may-2026',
-    title: 'Utah AI/ML Meetup · Agentic Systems in Production',
-    shortDescription:
-      'Three talks on running agentic LLM systems in production — reliability, cost, and evals.',
+    id: 'route',
+    name: 'Route',
     description:
-      'Speakers from Podium, Domo, and a stealth AI startup share how they ship agentic systems to real customers. Includes live Q&A and post-talk networking.',
-    date: '2026-05-22T18:30:00-06:00',
+      'Post-purchase platform for online merchants — package tracking, shipping protection, and a branded order experience powering thousands of Shopify stores.',
+    website: 'https://route.com',
     location: 'Lehi, UT',
-    venue: 'Podium HQ',
-    isOnline: false,
-    url: 'https://www.meetup.com/',
-    topics: ['AI/ML', 'Backend'],
-    company: 'podium',
-    isFeatured: true,
-    source: 'meetup',
-    createdAt: NOW,
-    updatedAt: NOW,
+    size: 'mid',
+    topics: ['React', 'TypeScript', 'Node', 'Ecommerce'],
+    careersUrl: 'https://route.com/careers',
+    isHiring: true,
+    isFeatured: false,
+    ats: 'greenhouse',
+    atsSlug: 'route',
   },
   {
-    id: 'lehi-tech-happy-hour-may-2026',
-    title: 'Lehi Tech Happy Hour',
-    shortDescription:
-      'Casual networking for engineers, PMs, and founders across the Silicon Slopes corridor.',
+    id: 'pattern',
+    name: 'Pattern',
     description:
-      'No agenda, no talks. Just drinks, food, and a chance to put faces to names. Come early — the good tables go fast.',
-    date: '2026-05-08T17:30:00-06:00',
-    endDate: '2026-05-08T19:30:00-06:00',
+      'Global ecommerce accelerator helping brands grow on Amazon, Walmart, and other marketplaces. Combines data science, advertising, and logistics across 60+ countries.',
+    website: 'https://pattern.com',
     location: 'Lehi, UT',
-    venue: 'The Hub at Traverse Mountain',
-    isOnline: false,
-    url: 'https://lu.ma/',
-    topics: ['Networking'],
+    size: 'large',
+    topics: ['React', 'TypeScript', 'Python', 'Ecommerce'],
+    careersUrl: 'https://pattern.com/careers',
+    isHiring: true,
     isFeatured: false,
-    source: 'manual',
-    createdAt: NOW,
-    updatedAt: NOW,
+    ats: 'lever',
+    atsSlug: 'pattern',
   },
   {
-    id: 'adobe-genai-creative-suite-2026',
-    title: 'Adobe Tech Talk · GenAI in Creative Suite',
-    shortDescription:
-      'Inside look at how Adobe ships generative AI features in Photoshop and Premiere at scale.',
+    id: 'filevine',
+    name: 'Filevine',
     description:
-      "Adobe engineers walk through the architecture behind Firefly's integration into Creative Cloud — model serving, latency budgets, and user experience tradeoffs. Q&A to follow.",
-    date: '2026-05-20T17:00:00-06:00',
-    location: 'Lehi, UT',
-    venue: 'Adobe Lehi Building A',
-    isOnline: false,
-    url: 'https://www.adobe.com/events.html',
-    topics: ['AI/ML', 'Design', 'Backend'],
-    company: 'adobe-lehi',
-    isFeatured: false,
-    source: 'company',
-    createdAt: NOW,
-    updatedAt: NOW,
-  },
-  {
-    id: 'lucid-hackathon-2026',
-    title: 'Lucid Hackathon 2026',
-    shortDescription:
-      '24-hour hackathon at Lucid HQ. Build something on top of Lucid APIs — prizes for best design tool, best AI integration, and best wildcard.',
-    description:
-      "Lucid's annual open hackathon. Teams of up to 4. Lucid will provide food, drinks, and API credits. All skill levels welcome. Bring a laptop and an idea.",
-    date: '2026-06-13T09:00:00-06:00',
-    endDate: '2026-06-14T09:00:00-06:00',
-    location: 'South Jordan, UT',
-    venue: 'Lucid HQ',
-    isOnline: false,
-    url: 'https://www.lucidsoftware.com/',
-    topics: ['React', 'AI/ML', 'Design', 'Startup'],
-    company: 'lucid',
-    isFeatured: true,
-    source: 'company',
-    createdAt: NOW,
-    updatedAt: NOW,
-  },
-  {
-    id: 'bamboohr-engineering-open-house-2026',
-    title: 'BambooHR Engineering Open House',
-    shortDescription: 'Meet the BambooHR engineering team, tour the office, and learn how they ship.',
-    description:
-      "Informal evening with BambooHR engineers. Office tour, short tech talk on their migration from Ember to React, and 1:1 time with team leads. Open bar and appetizers.",
-    date: '2026-06-05T17:30:00-06:00',
-    location: 'Lindon, UT',
-    venue: 'BambooHR HQ',
-    isOnline: false,
-    url: 'https://www.bamboohr.com/',
-    topics: ['React', 'Frontend', 'Networking'],
-    company: 'bamboohr',
-    isFeatured: false,
-    source: 'company',
-    createdAt: NOW,
-    updatedAt: NOW,
-  },
-  {
-    id: 'domo-developer-day-2026',
-    title: 'Domo Developer Day',
-    shortDescription:
-      'Full-day technical conference on the Domo platform — API integrations, data apps, and custom visualizations.',
-    description:
-      "Deep-dive technical sessions for developers building on Domo. Topics include Domo's low-code app builder, custom D3 bricks, and the upcoming Everywhere SDK. Includes lunch.",
-    date: '2026-06-18T09:00:00-06:00',
-    endDate: '2026-06-18T17:00:00-06:00',
-    location: 'American Fork, UT',
-    venue: 'Domo HQ',
-    isOnline: false,
-    url: 'https://www.domo.com/',
-    topics: ['Backend', 'Data Viz', 'Product'],
-    company: 'domo',
-    isFeatured: false,
-    source: 'company',
-    createdAt: NOW,
-    updatedAt: NOW,
-  },
-  {
-    id: 'women-in-tech-utah-may-2026-mixer',
-    title: 'Women in Tech Utah · May Mixer',
-    shortDescription:
-      'Monthly networking mixer for women and non-binary folks in Utah tech, hosted at Canopy.',
-    description:
-      'Drinks, appetizers, and unstructured networking. New attendees welcome. Canopy is providing the space and refreshments — RSVP via the link.',
-    date: '2026-05-29T17:30:00-06:00',
-    endDate: '2026-05-29T19:30:00-06:00',
-    location: 'Lehi, UT',
-    venue: 'Canopy HQ',
-    isOnline: false,
-    url: 'https://lu.ma/',
-    topics: ['Networking'],
-    company: 'canopy',
-    isFeatured: false,
-    source: 'manual',
-    createdAt: NOW,
-    updatedAt: NOW,
-  },
-  {
-    id: 'yc-utah-alumni-mixer-2026',
-    title: 'Y Combinator Utah Alumni Mixer',
-    shortDescription:
-      'Invite-open mixer for YC alumni and founders currently fundraising. Drinks and intros.',
-    description:
-      'YC alumni in Utah and anyone currently building. Low-key evening at a founder-friendly rooftop bar. Expect founders, angels, and a few curious engineers.',
-    date: '2026-06-25T18:00:00-06:00',
+      'Legal-work platform for case management, document automation, and matter analytics. Used by law firms across the country to run their practice end-to-end.',
+    website: 'https://www.filevine.com',
     location: 'Salt Lake City, UT',
-    venue: 'Kimpton Hotel Monaco Rooftop',
-    isOnline: false,
-    url: 'https://lu.ma/',
-    topics: ['Networking', 'Startup'],
+    size: 'large',
+    topics: ['React', 'TypeScript', 'Node', 'Legal'],
+    careersUrl: 'https://www.filevine.com/careers/',
+    isHiring: true,
     isFeatured: false,
-    source: 'manual',
-    createdAt: NOW,
-    updatedAt: NOW,
+    ats: 'lever',
+    atsSlug: 'filevine',
   },
-];
-
-const jobs: Job[] = [
   {
-    id: 'bamboohr-full-stack-developer',
-    title: 'Full Stack Developer',
-    company: 'BambooHR',
-    companyId: 'bamboohr',
+    id: 'awardco',
+    name: 'Awardco',
+    description:
+      'Employee recognition and rewards platform with the largest reward network of any platform in its category. Backed by an Amazon Business partnership.',
+    website: 'https://www.awardco.com',
     location: 'Lindon, UT',
-    type: 'full-time',
-    level: 'mid',
-    salary: '$110k–$140k',
-    description:
-      'Build customer-facing features across the BambooHR platform. React on the frontend, PHP + Node services on the backend. Product-minded engineers encouraged to apply.',
-    url: 'https://www.bamboohr.com/about/careers/',
-    topics: ['React', 'PHP', 'Node'],
-    postedAt: '2026-04-12T00:00:00Z',
-    isHighlighted: false,
-    source: 'company',
+    size: 'mid',
+    topics: ['React', 'TypeScript', 'Node'],
+    careersUrl: 'https://www.awardco.com/careers',
+    isHiring: true,
+    isFeatured: false,
+    ats: 'greenhouse',
+    atsSlug: 'awardco',
   },
   {
-    id: 'adobe-swe-ii-creative-cloud',
-    title: 'Software Engineer II · Creative Cloud',
-    company: 'Adobe',
-    companyId: 'adobe-lehi',
-    location: 'Lehi, UT',
-    type: 'full-time',
-    level: 'mid',
-    salary: '$130k–$170k',
+    id: 'pluralsight',
+    name: 'Pluralsight',
     description:
-      "Work on the Creative Cloud web surfaces — billing, account, and creative asset management. React + TypeScript with some Java services. Hybrid 3 days in office.",
-    url: 'https://www.adobe.com/careers.html',
-    topics: ['React', 'TypeScript', 'Java'],
-    postedAt: '2026-04-15T00:00:00Z',
-    isHighlighted: false,
-    source: 'company',
-  },
-  {
-    id: 'domo-react-developer',
-    title: 'React Developer',
-    company: 'Domo',
-    companyId: 'domo',
-    location: 'American Fork, UT',
-    type: 'full-time',
-    level: 'mid',
-    description:
-      "Build the next generation of Domo's dashboard experience. Heavy React + TypeScript work, some D3, real-time data streams.",
-    url: 'https://www.domo.com/company/careers',
-    topics: ['React', 'TypeScript', 'Data Viz'],
-    postedAt: '2026-04-08T00:00:00Z',
-    isHighlighted: false,
-    source: 'linkedin',
-  },
-  {
-    id: 'divvy-swe-ii',
-    title: 'Software Engineer II',
-    company: 'BILL Spend & Expense',
-    companyId: 'divvy',
+      'Tech workforce-development platform — courses, hands-on labs, and skills assessments used by individual engineers and Fortune 500 enterprises.',
+    website: 'https://www.pluralsight.com',
     location: 'Draper, UT',
-    type: 'full-time',
-    level: 'mid',
-    description:
-      'Work on expense management core — transaction processing, card controls, and reporting. React + TypeScript on the frontend, Node on the backend.',
-    url: 'https://www.bill.com/careers',
-    topics: ['React', 'TypeScript', 'Node'],
-    postedAt: '2026-04-09T00:00:00Z',
-    isHighlighted: false,
-    source: 'linkedin',
+    size: 'large',
+    topics: ['React', 'TypeScript', 'Go', 'Education'],
+    careersUrl: 'https://www.pluralsight.com/careers',
+    isHiring: true,
+    isFeatured: false,
   },
   {
-    id: 'mx-junior-frontend',
-    title: 'Junior Frontend Engineer',
-    company: 'MX Technologies',
-    companyId: 'mx',
-    location: 'Lehi, UT',
-    type: 'full-time',
-    level: 'junior',
-    salary: '$80k–$100k',
+    id: 'vasion',
+    name: 'Vasion',
     description:
-      "Frontend role on MX's core web app used by banks and credit unions. React + TypeScript. Strong mentorship, clear growth path.",
-    url: 'https://www.mx.com/careers/',
-    topics: ['React', 'TypeScript', 'Fintech'],
-    postedAt: '2026-04-11T00:00:00Z',
-    isHighlighted: false,
-    source: 'company',
+      'Print-and-document automation platform (formerly PrinterLogic). SaaS for serverless printing, content services, and workflow automation.',
+    website: 'https://www.vasion.com',
+    location: 'St. George, UT',
+    size: 'mid',
+    topics: ['Vue', 'Node', 'AWS'],
+    careersUrl: 'https://www.vasion.com/careers/',
+    isHiring: true,
+    isFeatured: false,
   },
   {
-    id: 'health-catalyst-software-engineer',
-    title: 'Software Engineer · Analytics Platform',
-    company: 'Health Catalyst',
-    companyId: 'health-catalyst',
-    location: 'South Jordan, UT',
-    type: 'full-time',
-    level: 'mid',
+    id: 'nav',
+    name: 'Nav Technologies',
     description:
-      "Build the web tools clinicians and analysts use to surface insights from healthcare data. C# on the backend, React on the frontend.",
-    url: 'https://www.healthcatalyst.com/careers/',
-    topics: ['React', 'C#', 'Healthcare'],
-    postedAt: '2026-04-06T00:00:00Z',
-    isHighlighted: false,
-    source: 'company',
+      'Small-business financial-health platform — credit, lending, and cash-flow tools for SMB owners. Mix of ML-driven product and fintech services.',
+    website: 'https://www.nav.com',
+    location: 'Draper, UT',
+    size: 'mid',
+    topics: ['React', 'Python', 'Fintech'],
+    careersUrl: 'https://www.nav.com/about/careers/',
+    isHiring: true,
+    isFeatured: false,
   },
   {
-    id: 'vivint-react-node-developer',
-    title: 'React / Node Developer',
-    company: 'Vivint Smart Home',
+    id: 'vivint',
+    name: 'Vivint Smart Home',
+    description:
+      'Smart-home and security platform combining hardware, mobile, and cloud services. Engineering teams across mobile, web, IoT firmware, and machine learning.',
+    website: 'https://www.vivint.com',
     location: 'Provo, UT',
-    type: 'full-time',
-    level: 'mid',
-    salary: '$115k–$145k',
-    description:
-      "Ship customer-facing features in the Vivint web and mobile app. Heavy React + TypeScript, Node services, some React Native cross-over.",
-    url: 'https://careers.vivint.com/',
-    topics: ['React', 'TypeScript', 'Node'],
-    postedAt: '2026-04-13T00:00:00Z',
-    isHighlighted: false,
-    source: 'linkedin',
-  },
-  {
-    id: 'adobe-workfront-swe',
-    title: 'Software Engineer · Workfront',
-    company: 'Adobe (Workfront)',
-    companyId: 'adobe-lehi',
-    location: 'Lehi, UT',
-    type: 'full-time',
-    level: 'senior',
-    salary: '$160k–$210k',
-    description:
-      "Senior engineer role on the Workfront platform. React + TypeScript frontend, Java services, large-scale enterprise customers.",
-    url: 'https://www.adobe.com/careers.html',
-    topics: ['React', 'TypeScript', 'Java'],
-    postedAt: '2026-04-16T00:00:00Z',
-    isHighlighted: false,
-    source: 'company',
-  },
-  {
-    id: 'claimlogiq-junior-swe',
-    title: 'Junior Software Engineer',
-    company: 'ClaimLogiq',
-    location: 'Lehi, UT',
-    type: 'full-time',
-    level: 'junior',
-    salary: '$78k–$95k',
-    description:
-      "Entry role at a healthcare payments startup. React + TypeScript frontend, .NET backend. Small team, high leverage.",
-    url: 'https://claimlogiq.com/careers/',
-    topics: ['React', 'TypeScript', 'C#', 'Healthcare'],
-    postedAt: '2026-04-07T00:00:00Z',
-    isHighlighted: false,
-    source: 'company',
+    size: 'large',
+    topics: ['React', 'TypeScript', 'Node', 'IoT'],
+    careersUrl: 'https://careers.vivint.com',
+    isHiring: true,
+    isFeatured: false,
   },
 ];
+
+// Events are not seeded — they are populated by `npm run aggregate:events`,
+// which pulls upcoming events from the configured Meetup groups via the
+// Meetup GraphQL API. Set MEETUP_* secrets (see docs/meetup-setup.md) to
+// enable. Until then, the Events page directs visitors upstream.
+const events: Event[] = [];
+
+
+// Jobs are not seeded — they are populated by `npm run aggregate:jobs`,
+// which pulls live postings from each company's public ATS feed
+// (Greenhouse, Lever, Ashby). This keeps the listings real and current.
+const jobs: Job[] = [];
+
+async function deleteCollection(name: string): Promise<number> {
+  const snap = await db.collection(name).get();
+  if (snap.empty) return 0;
+  // batched commits — Firestore caps at 500 ops/batch.
+  let deleted = 0;
+  for (let i = 0; i < snap.docs.length; i += 400) {
+    const chunk = snap.docs.slice(i, i + 400);
+    const batch = db.batch();
+    chunk.forEach((d) => batch.delete(d.ref));
+    await batch.commit();
+    deleted += chunk.length;
+  }
+  return deleted;
+}
 
 async function seedCollection<T extends { id: string }>(
   name: string,
   items: T[],
 ): Promise<void> {
-  console.log(`Seeding ${items.length} ${name}...`);
+  const deleted = await deleteCollection(name);
+  console.log(`Seeding ${items.length} ${name} (cleared ${deleted})...`);
+  if (items.length === 0) {
+    console.log(`  ✓ ${name} (empty — populated elsewhere)`);
+    return;
+  }
   const batch = db.batch();
   for (const item of items) {
     const { id, ...data } = item;

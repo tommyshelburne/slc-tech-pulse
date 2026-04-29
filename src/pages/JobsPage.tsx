@@ -62,14 +62,13 @@ export default function JobsPage() {
           <h1 style={{ fontSize: '24px', fontWeight: 700, margin: 0 }}>Jobs</h1>
           <Badge label={`${filtered.length} shown`} />
         </div>
-        <a
+        <Button
           href="mailto:hello@slctechpulse.com?subject=Job%20submission"
-          style={{ textDecoration: 'none' }}
+          variant="outline"
+          size="sm"
         >
-          <Button variant="outline" size="sm">
-            Submit a job
-          </Button>
-        </a>
+          Submit a job
+        </Button>
       </header>
 
       <JobFilters />

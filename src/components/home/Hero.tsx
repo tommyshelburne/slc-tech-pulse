@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 
 export function Hero() {
@@ -36,16 +35,12 @@ export function Hero() {
           company pages, and community submissions.
         </p>
         <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-          <Link to="/events" style={{ textDecoration: 'none', display: 'inline-block' }}>
-            <Button variant="primary" size="lg">
-              Browse Events
-            </Button>
-          </Link>
-          <Link to="/jobs" style={{ textDecoration: 'none', display: 'inline-block' }}>
-            <Button variant="outline" size="lg">
-              View Jobs
-            </Button>
-          </Link>
+          <Button to="/events" variant="primary" size="lg">
+            Browse Events
+          </Button>
+          <Button to="/jobs" variant="outline" size="lg">
+            View Jobs
+          </Button>
         </div>
       </div>
     </section>
