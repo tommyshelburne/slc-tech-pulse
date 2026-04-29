@@ -57,14 +57,13 @@ export default function EventsPage() {
           <h1 style={{ fontSize: '24px', fontWeight: 700, margin: 0 }}>Events</h1>
           <Badge label={`${filtered.length} shown`} />
         </div>
-        <a
+        <Button
           href="mailto:hello@slctechpulse.com?subject=Event%20submission"
-          style={{ textDecoration: 'none' }}
+          variant="outline"
+          size="sm"
         >
-          <Button variant="outline" size="sm">
-            Suggest an event
-          </Button>
-        </a>
+          Suggest an event
+        </Button>
       </header>
 
       <EventFilters />
@@ -87,10 +86,7 @@ export default function EventsPage() {
             </div>
           </div>
         ) : (
-          <EmptyState
-            title="No events yet"
-            subtitle="Check back soon — new events are added daily."
-          />
+          <UpstreamFallback />
         )
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -99,6 +95,91 @@ export default function EventsPage() {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+const MEETUP_GROUPS: Array<{ name: string; url: string; description: string }> = [
+  {
+    name: 'Silicon Slopes',
+    url: 'https://www.meetup.com/silicon-slopes/',
+    description: 'The flagship Utah tech community. Talks, summits, and networking.',
+  },
+  {
+    name: 'Utah JavaScript',
+    url: 'https://www.meetup.com/utah-javascript-meetup/',
+    description: 'JS / TS / Node talks and pizza.',
+  },
+  {
+    name: 'SLC React',
+    url: 'https://www.meetup.com/slcreact/',
+    description: 'React patterns, deep dives, and community shop talk.',
+  },
+  {
+    name: 'Utah Python User Group',
+    url: 'https://www.meetup.com/utah-python-user-group/',
+    description: 'Python from data science to web. Monthly meetups in SLC.',
+  },
+  {
+    name: 'Utah AI/ML',
+    url: 'https://www.meetup.com/utah-ai-ml-meetup/',
+    description: 'Applied ML, LLMs, and Utah AI startups.',
+  },
+  {
+    name: 'Women in Tech Utah',
+    url: 'https://www.meetup.com/women-in-tech-utah/',
+    description: 'Mixers, talks, and mentorship across Utah tech.',
+  },
+];
+
+function UpstreamFallback() {
+  return (
+    <div>
+      <EmptyState
+        title="No events to show yet"
+        subtitle="Our Meetup aggregator isn't running here yet. In the meantime, here are the Utah tech groups we'll be pulling from:"
+      />
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '10px',
+          marginTop: '8px',
+        }}
+      >
+        {MEETUP_GROUPS.map((g) => (
+          <a
+            key={g.url}
+            href={g.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'block',
+              padding: '14px 16px',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+              background: 'var(--bg-card)',
+              textDecoration: 'none',
+              color: 'var(--text-primary)',
+              transition: 'border-color 0.15s ease',
+            }}
+          >
+            <div
+              style={{
+                fontSize: '13px',
+                fontWeight: 600,
+                color: 'var(--accent)',
+                marginBottom: '4px',
+              }}
+            >
+              {g.name} ↗
+            </div>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+              {g.description}
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }

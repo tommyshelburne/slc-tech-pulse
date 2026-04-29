@@ -28,8 +28,23 @@ export default function AboutPage() {
 
       <Section title="How data is sourced">
         <p>
-          Events come from Meetup, Eventbrite, lu.ma, and direct company postings. Jobs are curated
-          from LinkedIn, company careers pages, and community tips. Companies are hand-maintained.
+          <strong style={{ color: 'var(--text-primary)' }}>Events</strong> are pulled from public
+          Meetup groups across the Wasatch Front (Silicon Slopes, Utah JavaScript, Utah Python, SLC
+          React, Women in Tech Utah, Utah AI/ML, and others) via the Meetup GraphQL API. Each
+          listing links back to the original event page on Meetup so RSVPs and details stay with
+          the organizer.
+        </p>
+        <p>
+          <strong style={{ color: 'var(--text-primary)' }}>Jobs</strong> are pulled directly from
+          the public ATS feeds (Greenhouse, Lever, Ashby) of the Utah employers in our company
+          directory. Roles are filtered to Utah on-site and US-remote tech positions. Each listing
+          links back to the company's own application page — applications go through them, not us.
+        </p>
+        <p>
+          <strong style={{ color: 'var(--text-primary)' }}>Companies</strong> are a hand-maintained
+          directory of Utah-headquartered or Utah-major-presence tech employers. The "Hiring" flag
+          is updated when the directory is refreshed; for current openings, follow the careers link
+          to the company's site.
         </p>
         <p>
           Saw a broken listing or something missing? Drop us a line at{' '}
@@ -40,22 +55,20 @@ export default function AboutPage() {
         </p>
       </Section>
 
-      <Section title="Note on this build">
-        <p>
-          This site currently runs on curated seed data. A few things worth knowing:
-        </p>
+      <Section title="Notes on freshness">
         <ul style={{ paddingLeft: '18px', marginTop: '8px', lineHeight: 1.7 }}>
           <li>
-            Listings link to organizer homepages and company careers pages — not to specific event
-            registrations or job applications. That keeps links stable but means you'll land on a
-            directory rather than the exact posting.
+            Aggregation runs on a schedule, not in real-time. Expect listings to be current within
+            a day or so of being posted upstream.
           </li>
           <li>
-            The "Hiring" flag on a company reflects the seed date (April 2026), not real-time
-            status. Confirm current openings on the linked careers page.
+            We don't ingest Eventbrite or LinkedIn directly — those platforms don't offer open
+            APIs. Events posted only there won't appear unless they're cross-listed on Meetup or
+            submitted by an organizer.
           </li>
           <li>
-            A live data pipeline (Meetup / LinkedIn / company APIs) is parked for v2.
+            If a company isn't on a supported ATS (Greenhouse, Lever, Ashby), their roles won't
+            appear here automatically. Tell us and we'll see what we can do.
           </li>
         </ul>
       </Section>

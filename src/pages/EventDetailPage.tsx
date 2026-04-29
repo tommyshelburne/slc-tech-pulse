@@ -111,22 +111,20 @@ function EventDetailBody({ event, relatedEvents }: BodyProps) {
           <span>{event.isOnline ? '🌐 Online' : `📍 ${event.location}`}</span>
           {event.company && <span>🏢 {event.company}</span>}
         </div>
-        <a
+        <Button
           href={event.url}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ textDecoration: 'none' }}
+          variant="primary"
+          size="md"
         >
-          <Button variant="primary" size="md">
-            View event page →
-          </Button>
-        </a>
+          View event page →
+        </Button>
       </section>
 
       <div
+        className="grid grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]"
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)',
           gap: '24px',
           marginBottom: '48px',
         }}
