@@ -146,9 +146,13 @@ describe('EventsPage', () => {
     expect(screen.getByText(/network down/i)).toBeInTheDocument();
   });
 
-  it('renders the Suggest an event link', () => {
+  it('opens a submit dialog when Suggest an event is clicked', async () => {
+    const user = userEvent.setup();
     renderEvents();
-    const link = screen.getByRole('link', { name: /suggest an event/i });
-    expect(link).toHaveAttribute('href', expect.stringContaining('mailto:'));
+    const button = screen.getByRole('button', { name: /suggest an event/i });
+    await user.click(button);
+    const dialog = await screen.findByRole('dialog', { name: /suggest an event/i });
+    expect(dialog).toBeInTheDocument();
+    expect(screen.getByText('hello@slctechpulse.com')).toBeInTheDocument();
   });
 });
