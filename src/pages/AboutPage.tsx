@@ -15,7 +15,7 @@ export default function AboutPage() {
         }}
       >
         A community resource for the Salt Lake City and Silicon Slopes tech scene. Events, job
-        openings, and company directory — in one minimal, fast feed.
+        openings, and a company directory in one minimal, fast feed.
       </p>
 
       <Section title="What you'll find here">
@@ -38,7 +38,7 @@ export default function AboutPage() {
           <strong style={{ color: 'var(--text-primary)' }}>Jobs</strong> are pulled directly from
           the public ATS feeds (Greenhouse, Lever, Ashby) of the Utah employers in our company
           directory. Roles are filtered to Utah on-site and US-remote tech positions. Each listing
-          links back to the company's own application page — applications go through them, not us.
+          links back to the company's own application page, so applications go through them, not us.
         </p>
         <p>
           <strong style={{ color: 'var(--text-primary)' }}>Companies</strong> are a hand-maintained
@@ -75,8 +75,8 @@ export default function AboutPage() {
 
       <Section title="Submit an event or job">
         <p>
-          Organizing a meetup or hiring at a Utah company? Send the details — event page, title,
-          date, location, short description (or job posting URL) — to{' '}
+          Organizing a meetup or hiring at a Utah company? Send the details (event page, title,
+          date, location, short description, or job posting URL) to{' '}
           <a href="mailto:hello@slctechpulse.com?subject=Submission" style={{ color: 'var(--accent)' }}>
             hello@slctechpulse.com
           </a>
