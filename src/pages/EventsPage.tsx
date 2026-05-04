@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useEventsStore } from '../store/eventsStore';
 import { useUIStore } from '../store/uiStore';
@@ -8,6 +8,7 @@ import { Spinner } from '../components/ui/Spinner';
 import { EmptyState } from '../components/ui/EmptyState';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
+import { SubmitDialog } from '../components/ui/SubmitDialog';
 import { filterEvents } from '../utils/filters';
 import { useEventFiltersUrlSync } from '../hooks/useEventFiltersUrlSync';
 
@@ -24,6 +25,8 @@ export default function EventsPage() {
   const format = useUIStore((s) => s.eventFormatFilter);
   const query = useUIStore((s) => s.searchQuery);
   const clearFilters = useUIStore((s) => s.clearFilters);
+
+  const [submitOpen, setSubmitOpen] = useState(false);
 
   useEffect(() => {
     const state = useEventsStore.getState();
@@ -57,14 +60,23 @@ export default function EventsPage() {
           <h1 style={{ fontSize: '24px', fontWeight: 700, margin: 0 }}>Events</h1>
           <Badge label={`${filtered.length} shown`} />
         </div>
-        <Button
-          href="mailto:hello@slctechpulse.com?subject=Event%20submission"
-          variant="outline"
-          size="sm"
-        >
+        <Button variant="outline" size="sm" onClick={() => setSubmitOpen(true)}>
           Suggest an event
         </Button>
       </header>
+
+      <SubmitDialog
+        open={submitOpen}
+        onClose={() => setSubmitOpen(false)}
+        title="Suggest an event"
+        intro="Organizing a meetup, conference, or hackathon in the SLC tech scene? Send us the details and we'll add it within 24 hours."
+        checklist={[
+          'Event page link (lu.ma, Eventbrite, Meetup, etc.)',
+          'Title, date, and location',
+          'A short description of what attendees can expect',
+        ]}
+        mailtoSubject="Event submission"
+      />
 
       <EventFilters />
 

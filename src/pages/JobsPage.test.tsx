@@ -158,9 +158,13 @@ describe('JobsPage', () => {
     expect(screen.getByText(/network down/i)).toBeInTheDocument();
   });
 
-  it('renders Submit a job mailto link', () => {
+  it('opens a submit dialog when Submit a job is clicked', async () => {
+    const user = userEvent.setup();
     renderJobs();
-    const link = screen.getByRole('link', { name: /submit a job/i });
-    expect(link).toHaveAttribute('href', expect.stringContaining('mailto:'));
+    const button = screen.getByRole('button', { name: /submit a job/i });
+    await user.click(button);
+    const dialog = await screen.findByRole('dialog', { name: /submit a job/i });
+    expect(dialog).toBeInTheDocument();
+    expect(screen.getByText('hello@slctechpulse.com')).toBeInTheDocument();
   });
 });

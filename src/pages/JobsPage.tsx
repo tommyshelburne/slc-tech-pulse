@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useJobsStore } from '../store/jobsStore';
 import { useUIStore } from '../store/uiStore';
@@ -8,6 +8,7 @@ import { Spinner } from '../components/ui/Spinner';
 import { EmptyState } from '../components/ui/EmptyState';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
+import { SubmitDialog } from '../components/ui/SubmitDialog';
 import { filterJobs } from '../utils/filters';
 import { useJobFiltersUrlSync } from '../hooks/useJobFiltersUrlSync';
 
@@ -25,6 +26,8 @@ export default function JobsPage() {
   const topics = useUIStore((s) => s.jobTopicFilter);
   const query = useUIStore((s) => s.searchQuery);
   const clearFilters = useUIStore((s) => s.clearFilters);
+
+  const [submitOpen, setSubmitOpen] = useState(false);
 
   useEffect(() => {
     const state = useJobsStore.getState();
@@ -62,14 +65,23 @@ export default function JobsPage() {
           <h1 style={{ fontSize: '24px', fontWeight: 700, margin: 0 }}>Jobs</h1>
           <Badge label={`${filtered.length} shown`} />
         </div>
-        <Button
-          href="mailto:hello@slctechpulse.com?subject=Job%20submission"
-          variant="outline"
-          size="sm"
-        >
+        <Button variant="outline" size="sm" onClick={() => setSubmitOpen(true)}>
           Submit a job
         </Button>
       </header>
+
+      <SubmitDialog
+        open={submitOpen}
+        onClose={() => setSubmitOpen(false)}
+        title="Submit a job"
+        intro="Hiring at a Utah tech company? Send us the posting and we'll add it within 24 hours."
+        checklist={[
+          'Job posting URL (Greenhouse, Lever, Ashby, or your careers page)',
+          'Role title, level, and location (or remote status)',
+          "A note if there's anything specific you want highlighted",
+        ]}
+        mailtoSubject="Job submission"
+      />
 
       <JobFilters />
 
