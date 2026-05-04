@@ -153,6 +153,6 @@ describe('EventsPage', () => {
     await user.click(button);
     const dialog = await screen.findByRole('dialog', { name: /suggest an event/i });
     expect(dialog).toBeInTheDocument();
-    expect(screen.getByText('hello@slctechpulse.com')).toBeInTheDocument();
+    expect(screen.getByText('tommy.shelburne@pm.me')).toBeInTheDocument();
   });
 });

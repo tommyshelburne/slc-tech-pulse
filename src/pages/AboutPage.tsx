@@ -48,8 +48,8 @@ export default function AboutPage() {
         </p>
         <p>
           Saw a broken listing or something missing? Drop us a line at{' '}
-          <a href="mailto:hello@slctechpulse.com" style={{ color: 'var(--accent)' }}>
-            hello@slctechpulse.com
+          <a href="mailto:tommy.shelburne@pm.me" style={{ color: 'var(--accent)' }}>
+            tommy.shelburne@pm.me
           </a>
           .
         </p>
@@ -77,8 +77,8 @@ export default function AboutPage() {
         <p>
           Organizing a meetup or hiring at a Utah company? Send the details (event page, title,
           date, location, short description, or job posting URL) to{' '}
-          <a href="mailto:hello@slctechpulse.com?subject=Submission" style={{ color: 'var(--accent)' }}>
-            hello@slctechpulse.com
+          <a href="mailto:tommy.shelburne@pm.me?subject=Submission" style={{ color: 'var(--accent)' }}>
+            tommy.shelburne@pm.me
           </a>
           . We'll add it within 24 hours.
         </p>

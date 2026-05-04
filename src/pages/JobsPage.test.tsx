@@ -165,6 +165,6 @@ describe('JobsPage', () => {
     await user.click(button);
     const dialog = await screen.findByRole('dialog', { name: /submit a job/i });
     expect(dialog).toBeInTheDocument();
-    expect(screen.getByText('hello@slctechpulse.com')).toBeInTheDocument();
+    expect(screen.getByText('tommy.shelburne@pm.me')).toBeInTheDocument();
   });
 });
