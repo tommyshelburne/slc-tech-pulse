@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const EMAIL = 'hello@slctechpulse.com';
+const EMAIL = 'tommy.shelburne@pm.me';
 
 interface SubmitDialogProps {
   open: boolean;
