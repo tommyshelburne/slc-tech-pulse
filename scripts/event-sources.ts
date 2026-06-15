@@ -5,43 +5,42 @@ export interface EventSource {
   fallbackUrl: string;   // group landing page for events without an explicit URL
 }
 
-// Starter set of SLC/Lehi tech-scene Meetup groups. Eyeball/prune before
-// the first live run — group urlnames rot over time as organizers rename.
+// Verified SLC/Lehi tech-scene Meetup groups. Slugs confirmed April 2026.
 export const EVENT_SOURCES: EventSource[] = [
   {
-    urlname: 'silicon-slopes',
-    name: 'Silicon Slopes',
+    urlname: 'ssdevch',
+    name: 'Silicon Slopes Developer Chapter',
     defaultLocation: 'Lehi, UT',
-    fallbackUrl: 'https://www.meetup.com/silicon-slopes/events/',
+    fallbackUrl: 'https://www.meetup.com/ssdevch/events/',
   },
   {
-    urlname: 'utah-javascript-meetup',
-    name: 'Utah JavaScript',
+    urlname: 'utahjs',
+    name: 'UtahJS',
     defaultLocation: 'Salt Lake City, UT',
-    fallbackUrl: 'https://www.meetup.com/utah-javascript-meetup/events/',
+    fallbackUrl: 'https://www.meetup.com/utahjs/events/',
   },
   {
-    urlname: 'utah-python-user-group',
-    name: 'Utah Python User Group',
-    defaultLocation: 'Salt Lake City, UT',
-    fallbackUrl: 'https://www.meetup.com/utah-python-user-group/events/',
-  },
-  {
-    urlname: 'slcreact',
-    name: 'SLC React',
-    defaultLocation: 'Salt Lake City, UT',
-    fallbackUrl: 'https://www.meetup.com/slcreact/events/',
-  },
-  {
-    urlname: 'women-in-tech-utah',
-    name: 'Women in Tech Utah',
-    defaultLocation: 'Salt Lake City, UT',
-    fallbackUrl: 'https://www.meetup.com/women-in-tech-utah/events/',
-  },
-  {
-    urlname: 'utah-ai-ml-meetup',
-    name: 'Utah AI/ML',
+    urlname: 'pythonatthepoint',
+    name: 'Python at the Point',
     defaultLocation: 'Lehi, UT',
-    fallbackUrl: 'https://www.meetup.com/utah-ai-ml-meetup/events/',
+    fallbackUrl: 'https://www.meetup.com/pythonatthepoint/events/',
+  },
+  {
+    urlname: 'reactjs-utah',
+    name: 'ReactJS Utah',
+    defaultLocation: 'Salt Lake City, UT',
+    fallbackUrl: 'https://www.meetup.com/reactjs-utah/events/',
+  },
+  {
+    urlname: 'women-tech-utah',
+    name: 'Women&TECH Utah',
+    defaultLocation: 'Salt Lake City, UT',
+    fallbackUrl: 'https://www.meetup.com/women-tech-utah/events/',
+  },
+  {
+    urlname: 'machine-learning-utah',
+    name: 'MLOps and AI Utah',
+    defaultLocation: 'Salt Lake City, UT',
+    fallbackUrl: 'https://www.meetup.com/machine-learning-utah/events/',
   },
 ];
